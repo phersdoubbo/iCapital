@@ -43,3 +43,35 @@ https://icapital.vazquezulloa.com/
 no credentials needed 
 1 file to be upload at the time
 1 file MINIMUM need to create a entry
+
+=== repository was create in public github ===
+https://github.com/phersdoubbo/iCapital
+there was no pull request created code were push directly to expedite
+there was no jira link include was just based on the need and wasnt added in the comments
+for every step a image was added showcasing the achievement 
+activity can be seen in : https://github.com/phersdoubbo/iCapital/activity
+for every steps added this file was updated: https://github.com/phersdoubbo/iCapital/commits/main/explanation.txt
+
+
+
+
+What was done:
+Create a website that allow to introduce all criteria from https://gist.github.com/pm-builder/979dcf6300d4dff1cdfd2ee4808af091 using following technologies
+"react": "^18.2.0",
+"axios": "^1.4.0"
+PHP 7.4.3 for the server side 
+MySQL and server filesystem
+
+All point from the task were able to achieve and if I have more time i would add:
+Databirt validation for legal age 
+A more easy to use NJ dropdown
+authentication and authorization to the api
+authentication and authorization to the website
+passekey integration for easy login
+Properly storage of the file with access via signed url only to the user ( if needed to be seen , i did show to proof of working)
+ADA validation adherence to WCAG 2.1 as showing error as soon as you leave the field
+Validation on navigation via keyboard
+Validation in different browser 
+Validation in different OS
+Validation on Mobile devices
+UT for all the files
