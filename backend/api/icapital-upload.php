@@ -71,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare("SELECT id FROM investors WHERE id = ?");
     $stmt->bind_param("i", $investor_id);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->store_result();
 
-    if ($result->num_rows === 0) {
+    if ($stmt->num_rows === 0) {
         http_response_code(404);
         echo json_encode(['status' => 'error', 'message' => 'Investor not found']);
         exit;
@@ -162,11 +162,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare("SELECT id, investor_id, original_filename, stored_filename, file_path, file_size, file_type, upload_date FROM documents WHERE investor_id = ? ORDER BY upload_date DESC");
     $stmt->bind_param("i", $investor_id);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->store_result();
+
+    // Bind result variables
+    $stmt->bind_result($id, $investor_id, $original_filename, $stored_filename, $file_path, $file_size, $file_type, $upload_date);
 
     $documents = [];
-    while ($row = $result->fetch_assoc()) {
-        $documents[] = $row;
+    while ($stmt->fetch()) {
+        $documents[] = [
+            'id' => $id,
+            'investor_id' => $investor_id,
+            'original_filename' => $original_filename,
+            'stored_filename' => $stored_filename,
+            'file_path' => $file_path,
+            'file_size' => $file_size,
+            'file_type' => $file_type,
+            'upload_date' => $upload_date
+        ];
     }
 
     echo json_encode([
