@@ -75,3 +75,4 @@ Validation in different browser
 Validation in different OS
 Validation on Mobile devices
 UT for all the files
+Validation to avoid double submisssion when error ocurred uploading 

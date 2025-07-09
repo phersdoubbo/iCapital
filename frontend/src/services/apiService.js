@@ -51,12 +51,39 @@ export const apiService = {
         }
     },
 
-    // Upload document
+    // Upload documents (multiple files)
+    uploadDocuments: async (investorId, files) => {
+        try {
+            const formData = new FormData();
+            formData.append('investor_id', investorId);
+
+            // Append each file to the FormData
+            if (Array.isArray(files)) {
+                files.forEach((file, index) => {
+                    formData.append('documents', file);
+                });
+            } else {
+                // Handle single file case
+                formData.append('documents', files);
+            }
+
+            const response = await apiClient.post(API_ENDPOINTS.UPLOAD, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || { status: 'error', message: 'Network error' };
+        }
+    },
+
+    // Upload document (single file - for backward compatibility)
     uploadDocument: async (investorId, file) => {
         try {
             const formData = new FormData();
             formData.append('investor_id', investorId);
-            formData.append('document', file);
+            formData.append('documents', file);
 
             const response = await apiClient.post(API_ENDPOINTS.UPLOAD, formData, {
                 headers: {

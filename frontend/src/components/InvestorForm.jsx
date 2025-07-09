@@ -12,8 +12,9 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
         zip_code: ''
     });
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
     const [errors, setErrors] = useState({});
 
     // US States for dropdown
@@ -41,45 +42,60 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
         }
     };
 
+    const validateFile = (file) => {
+        // Validate file size (3MB limit)
+        if (file.size > 3 * 1024 * 1024) {
+            return 'File size must be less than 3MB';
+        }
+
+        // Validate file type
+        const allowedTypes = [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'text/plain'
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            return 'File type not allowed. Allowed types: PDF, DOC, DOCX, JPG, PNG, GIF, TXT';
+        }
+
+        return null;
+    };
+
     const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // Validate file size (3MB limit)
-            if (file.size > 3 * 1024 * 1024) {
-                setErrors(prev => ({
-                    ...prev,
-                    file: 'File size must be less than 3MB'
-                }));
-                setSelectedFile(null);
-                return;
+        const files = Array.from(e.target.files);
+        const validFiles = [];
+        const newErrors = [];
+
+        files.forEach((file, index) => {
+            const error = validateFile(file);
+            if (error) {
+                newErrors.push(`${file.name}: ${error}`);
+            } else {
+                validFiles.push(file);
             }
+        });
 
-            // Validate file type
-            const allowedTypes = [
-                'application/pdf',
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'image/jpeg',
-                'image/png',
-                'image/gif',
-                'text/plain'
-            ];
-
-            if (!allowedTypes.includes(file.type)) {
-                setErrors(prev => ({
-                    ...prev,
-                    file: 'File type not allowed. Allowed types: PDF, DOC, DOCX, JPG, PNG, GIF, TXT'
-                }));
-                setSelectedFile(null);
-                return;
-            }
-
-            setSelectedFile(file);
+        if (newErrors.length > 0) {
             setErrors(prev => ({
                 ...prev,
-                file: ''
+                files: newErrors.join(', ')
+            }));
+        } else {
+            setSelectedFiles(prev => [...prev, ...validFiles]);
+            setErrors(prev => ({
+                ...prev,
+                files: ''
             }));
         }
+    };
+
+    const removeFile = (index) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
     };
 
     const validateForm = () => {
@@ -112,8 +128,8 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
         }
 
         // File validation
-        if (!selectedFile) {
-            newErrors.file = 'Please select a file to upload';
+        if (selectedFiles.length === 0) {
+            newErrors.files = 'Please select at least one file to upload';
         }
 
         setErrors(newErrors);
@@ -128,9 +144,24 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
         }
 
         setIsSubmitting(true);
+        setUploadProgress(0);
 
         try {
-            const result = await onSubmit(formData, selectedFile);
+            // Simulate upload progress
+            const progressInterval = setInterval(() => {
+                setUploadProgress(prev => {
+                    if (prev >= 90) {
+                        clearInterval(progressInterval);
+                        return 90;
+                    }
+                    return prev + 10;
+                });
+            }, 200);
+
+            const result = await onSubmit(formData, selectedFiles);
+
+            // Complete the progress
+            setUploadProgress(100);
 
             if (result.status === 'success') {
                 // Reset form
@@ -143,7 +174,7 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
                     state: '',
                     zip_code: ''
                 });
-                setSelectedFile(null);
+                setSelectedFiles([]);
 
                 if (onSuccess) {
                     onSuccess(result);
@@ -156,7 +187,16 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
             });
         } finally {
             setIsSubmitting(false);
+            setUploadProgress(0);
         }
+    };
+
+    const formatFileSize = (bytes) => {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
     return (
@@ -268,23 +308,56 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="document">Upload Document *</label>
+                    <label htmlFor="documents">Upload Documents *</label>
                     <input
                         type="file"
-                        id="document"
-                        name="document"
+                        id="documents"
+                        name="documents"
                         onChange={handleFileChange}
                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.txt"
-                        className={errors.file ? 'error' : ''}
+                        multiple
+                        className={errors.files ? 'error' : ''}
                     />
-                    <small>Maximum file size: 3MB. Allowed types: PDF, DOC, DOCX, JPG, PNG, GIF, TXT</small>
-                    {errors.file && <span className="error-message">{errors.file}</span>}
-                    {selectedFile && (
-                        <div className="file-info">
-                            <strong>Selected file:</strong> {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                    <small>Maximum file size: 3MB per file. Allowed types: PDF, DOC, DOCX, JPG, PNG, GIF, TXT</small>
+                    {errors.files && <span className="error-message">{errors.files}</span>}
+
+                    {selectedFiles.length > 0 && (
+                        <div className="files-list">
+                            <h4>Selected Files ({selectedFiles.length})</h4>
+                            {selectedFiles.map((file, index) => (
+                                <div key={index} className="file-item">
+                                    <div className="file-info">
+                                        <span className="file-name">{file.name}</span>
+                                        <span className="file-size">{formatFileSize(file.size)}</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="remove-file-btn"
+                                        onClick={() => removeFile(index)}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>
+
+                {/* Upload Progress Bar */}
+                {isSubmitting && (
+                    <div className="upload-progress">
+                        <div className="progress-header">
+                            <span>Uploading files...</span>
+                            <span className="progress-percentage">{uploadProgress}%</span>
+                        </div>
+                        <div className="progress-bar">
+                            <div
+                                className="progress-fill"
+                                style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                        </div>
+                    </div>
+                )}
 
                 {errors.submit && (
                     <div className="error-message submit-error">{errors.submit}</div>
@@ -295,7 +368,7 @@ const InvestorForm = ({ onSubmit, onSuccess }) => {
                     className="submit-button"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? 'Submitting...' : 'Add Investor'}
+                    {isSubmitting ? 'Uploading...' : 'Add Investor'}
                 </button>
             </form>
         </div>

@@ -8,27 +8,29 @@ function App() {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSubmit = async (investorData, file) => {
+    const handleSubmit = async (investorData, files) => {
         try {
             // First, create the investor
             const investorResponse = await apiService.createInvestor(investorData);
 
             if (investorResponse.status === 'success') {
-                // Then upload the document
-                const uploadResponse = await apiService.uploadDocument(
+                // Then upload the documents
+                const uploadResponse = await apiService.uploadDocuments(
                     investorResponse.investor_id,
-                    file
+                    files
                 );
 
-                if (uploadResponse.status === 'success') {
+                if (uploadResponse.status === 'success' || uploadResponse.status === 'partial') {
                     return {
                         status: 'success',
-                        message: 'Investor and document added successfully!',
+                        message: uploadResponse.status === 'success'
+                            ? 'Investor and documents added successfully!'
+                            : 'Investor created and some documents uploaded successfully!',
                         investor: investorResponse.data,
-                        document: uploadResponse.data
+                        documents: uploadResponse.data
                     };
                 } else {
-                    throw new Error('Failed to upload document');
+                    throw new Error('Failed to upload documents');
                 }
             } else {
                 throw new Error('Failed to create investor');
