@@ -4,3 +4,6 @@ https://gist.github.com/pm-builder/979dcf6300d4dff1cdfd2ee4808af091
 created a domain to showcase the final work in https://icapital.vazquezulloa.com/
 with simple hello world add image 1.png to show case this under images/1.png
 
+added database into my personal current DB to expedite process 
+schema /backend/database/icapital-schema.sql
+proof: /images/2.png
