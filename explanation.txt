@@ -28,4 +28,6 @@ https://confluence.vazquezulloa.com/uploads/investors/6/1752095491_4795d4dac173d
 will add this visually into the tiles to showcase 
 images/6.png show the counter part saved into the database for the file metadata
 
-
+=== adding react visual ===
+adding initial code for the consumption and display of the files 
+see proof in 7.png this is in local next step to deploy in server

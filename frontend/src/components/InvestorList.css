@@ -1,0 +1,263 @@
+.investor-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.investor-list-container h2 {
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 16px;
+}
+
+.error-message {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.retry-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 10px auto;
+    display: block;
+}
+
+.retry-button:hover {
+    background: #c82333;
+}
+
+.no-investors {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+
+.no-investors p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.investors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.investor-card {
+    background: #ffffff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.investor-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.investor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.investor-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.investor-id {
+    background: #e9ecef;
+    color: #6c757d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.investor-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.detail-row .label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 13px;
+    min-width: 80px;
+}
+
+.detail-row .value {
+    color: #333;
+    font-size: 13px;
+    text-align: right;
+    flex: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .investor-list-container {
+        padding: 15px;
+    }
+
+    .investors-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .investor-card {
+        padding: 15px;
+    }
+
+    .investor-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .investor-header h3 {
+        font-size: 16px;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .detail-row .label {
+        min-width: auto;
+    }
+
+    .detail-row .value {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .investor-list-container {
+        padding: 10px;
+    }
+
+    .investor-card {
+        padding: 12px;
+    }
+
+    .investor-list-container h2 {
+        font-size: 20px;
+    }
+}
+
+/* Documents Section Styles */
+.documents-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e1e5e9;
+}
+
+.documents-section .label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.documents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.document-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.document-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+}
+
+.document-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.document-info {
+    font-size: 11px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.no-documents {
+    color: #6c757d;
+    font-size: 13px;
+    font-style: italic;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Responsive adjustments for documents */
+@media (max-width: 768px) {
+    .document-item {
+        padding: 6px;
+    }
+
+    .document-link {
+        font-size: 12px;
+    }
+
+    .document-info {
+        font-size: 10px;
+    }
+}
