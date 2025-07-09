@@ -31,3 +31,15 @@ images/6.png show the counter part saved into the database for the file metadata
 === adding react visual ===
 adding initial code for the consumption and display of the files 
 see proof in 7.png this is in local next step to deploy in server
+
+
+=== created ftp for server ===
+user: icapital@icapital.vazquezulloa.com
+pwd: lJlgZV+]GxG <= please ask for the last characters as i dont want to comming full password
+
+=== site is in internet ===
+site is publicly up and running in this can be seen in 8.png
+https://icapital.vazquezulloa.com/
+no credentials needed 
+1 file to be upload at the time
+1 file MINIMUM need to create a entry
