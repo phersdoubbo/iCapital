@@ -21,3 +21,11 @@ i have setup as well for other projects to expedite the process but will include
 in the source code 
 
 in 4.png we can see basic services running with entry added for testing.
+
+=== Testing document uploaded ===
+File were uploaded successfuly see proof in images/5.png from a link like
+https://confluence.vazquezulloa.com/uploads/investors/6/1752095491_4795d4dac173dfdb.png
+will add this visually into the tiles to showcase 
+images/6.png show the counter part saved into the database for the file metadata
+
+
