@@ -57,14 +57,26 @@ export const apiService = {
             const formData = new FormData();
             formData.append('investor_id', investorId);
 
+            // Debug logging
+            console.log('DEBUG: Uploading files for investor:', investorId);
+            console.log('DEBUG: Number of files:', files.length);
+
             // Append each file to the FormData
             if (Array.isArray(files)) {
                 files.forEach((file, index) => {
-                    formData.append('documents', file);
+                    console.log(`DEBUG: Adding file ${index}:`, file.name, file.size, file.type);
+                    // Use array notation for multiple files
+                    formData.append('documents[]', file);
                 });
             } else {
                 // Handle single file case
+                console.log('DEBUG: Adding single file:', files.name, files.size, files.type);
                 formData.append('documents', files);
+            }
+
+            // Log FormData contents
+            for (let [key, value] of formData.entries()) {
+                console.log('DEBUG: FormData entry:', key, value instanceof File ? value.name : value);
             }
 
             const response = await apiClient.post(API_ENDPOINTS.UPLOAD, formData, {
@@ -74,6 +86,7 @@ export const apiService = {
             });
             return response.data;
         } catch (error) {
+            console.error('DEBUG: Upload error:', error);
             throw error.response?.data || { status: 'error', message: 'Network error' };
         }
     },
