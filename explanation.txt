@@ -7,3 +7,17 @@ with simple hello world add image 1.png to show case this under images/1.png
 added database into my personal current DB to expedite process 
 schema /backend/database/icapital-schema.sql
 proof: /images/2.png
+
+adding softlink to upload files faster given my current configuration
+ln -s /Users/fernandovazquez/react/iCapital/backend/api/icapital-cors.php /Users/fernandovazquez/react/confluenceTools/api/icapital-cors.php
+ln -s /Users/fernandovazquez/react/iCapital/backend/api/icapital-investors.php /Users/fernandovazquez/react/confluenceTools/api/icapital-investors.php
+ln -s /Users/fernandovazquez/react/iCapital/backend/api/icapital-upload.php /Users/fernandovazquez/react/confluenceTools/api/icapital-upload.php
+this will help us to have backend running in cloud and be seamless to updater server see proof in 3.png
+
+decide to use php to allow in my hosting to have the application running without 
+need to run localhost as well as mysql, will use my existing api director for faster deploymnent
+under https://confluence.vazquezulloa.com/api in order to expedite the process and will use the same database 
+i have setup as well for other projects to expedite the process but will include the script for creating the database
+in the source code 
+
+in 4.png we can see basic services running with entry added for testing.
